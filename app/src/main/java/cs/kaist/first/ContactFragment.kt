@@ -1,59 +1,84 @@
 package cs.kaist.first
 
+import android.content.ContentResolver
+import android.net.Uri
 import android.os.Bundle
+import android.provider.ContactsContract
+import android.provider.ContactsContract.Contacts
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ContactFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ContactFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+    private val PERMISSIONS_REQUEST_READ_CONTACTS = 100
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_contact, container, false)
+        val view = inflater.inflate(R.layout.fragment_contact, container, false)
+
+        super.onViewCreated(view, savedInstanceState)
+
+
+        var name = "이황근"
+        var number = "010-3909-4581"
+        var email = "cowcow24@naver.com"
+        var group = "friend"
+        var thumnailId: String? = null
+        var contactItems = ArrayList<ContactModel>()
+        //contactItems.add(ContactModel(name,number,email,group))
+        ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.READ_CONTACTS), 99)
+        val Uri = ContactsContract.Contacts.CONTENT_URI
+        val phoneUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
+        val projection = arrayOf(ContactsContract.CommonDataKinds.Phone.CONTACT_ID
+            , ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME
+            , ContactsContract.CommonDataKinds.Phone.NUMBER
+            , ContactsContract.CommonDataKinds.Email.DATA
+            , ContactsContract.CommonDataKinds.Phone.TYPE
+            , ContactsContract.Contacts.PHOTO_THUMBNAIL_URI
+            )
+
+        val cursor = requireActivity().contentResolver.query(phoneUri, projection, null, null, null)
+        while(cursor?.moveToNext()?:false) {
+            name = cursor?.getString(1).toString()
+            number = cursor?.getString(2).toString()
+            email = cursor?.getString(3).toString()
+            group = cursor?.getString(4).toString()
+            thumnailId = cursor?.getString(5)
+            println(thumnailId)
+            val phone = ContactModel(name, number,email,group,thumnailId)
+            // 개별 전화번호 데이터 생성
+
+            contactItems.add(phone)
+            // 결과목록에 더하기
+
+        }
+        println(contactItems)
+        contactItems.sortBy { it.name }
+        cursor?.close()
+        val contactAdapter = ContactAdapter(contactItems,requireContext())
+        val contactRecyclerView = view.findViewById<RecyclerView>(R.id.contactRecyclerView)
+        contactRecyclerView.layoutManager = LinearLayoutManager(context)
+        contactRecyclerView.adapter = contactAdapter
+
+
+        println(contactItems)
+        return view;
+
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ContactFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ContactFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+
+
     }
+
+
 }
