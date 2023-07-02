@@ -1,5 +1,6 @@
 package cs.kaist.first
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -10,10 +11,26 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        val ContactFragment = ContactFragment()
-        val GalleryFragment = GalleryFragment()
-        val MusicFragment = MusicFragment()
+        val intent = intent
+        val check = intent.getIntExtra("check", 0)
+        if(check == 10){
+            val idx = intent.getIntExtra("index", -1)
+            if(idx!=-1){
+                val bundle = Bundle()
+                bundle.putInt("index", idx)
+//                GalleryFragment().arguments = bundle
+//                println(GalleryFragment().arguments)
+                supportFragmentManager.beginTransaction().replace(R.id.main_frame, GalleryFragment().apply{
+                    arguments = bundle
+                }).commit()
 
+            }
+            else{
+                supportFragmentManager.beginTransaction().replace(R.id.main_frame, GalleryFragment()).commit()
+            }
+
+            return
+        }
         supportFragmentManager.beginTransaction().add(R.id.main_frame, ContactFragment()).commit()
 
         bottomNavigationView.setOnItemSelectedListener {item ->

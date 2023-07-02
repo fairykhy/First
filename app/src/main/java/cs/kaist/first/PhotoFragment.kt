@@ -20,5 +20,4 @@ class PhotoFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
     }
 
-
 }

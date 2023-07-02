@@ -25,50 +25,6 @@ class SlideAdapter(val list: ArrayList<String>, val viewpg: ViewPager): PagerAda
         val photo: ImageView = view.findViewById(R.id.full_photo)
         photo.setImageURI(Uri.parse(list[position]))
         container.addView(view)
-
-        val btn_share = view.findViewById<ImageView>(R.id.shareView)
-        val btn_bin = view.findViewById<ImageView>(R.id.binView)
-
-        btn_share.setOnClickListener{
-            val intent = Intent(Intent.ACTION_SEND)
-            val context = photo.context
-            intent.type = ("image/*")
-            intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(list[position]))
-            val chooser = Intent.createChooser(intent, "Share image")
-            context.startActivity(chooser)
-        }
-
-        btn_bin.setOnClickListener{
-
-            list.remove(list[position])
-            viewpg.removeView(view)
-            this.notifyDataSetChanged()
-
-//
-//            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply{
-//                addCategory(Intent.CATEGORY_OPENABLE)
-//                type = "image/*"
-//            }
-//            val context = photo.context
-//            intent.type = ("image/*")
-//            intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(list[position]))
-//            context.startActivity(intent)
-//            DocumentsContract.deleteDocument(context.contentResolver, Uri.parse(list[position]))
-//            Toast.makeText(context.applicationContext, "Done deleting an image", Toast.LENGTH_SHORT).show()
-//            val path = (Uri.parse(list[position])).path
-//            val resolver = context.contentResolver
-//            ActivityCompat.requestPermissions(activity, arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), 0x1033)
-//            resolver.delete(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, MediaStore.Images.Media.DATA+"=?",
-//                arrayOf(path)
-//            )
-//            photo.setImageResource(0)
-//            resolver.delete(uri, null, null)
-//            println(path)
-//            val file = File(path)
-//            file.delete()
-
-        }
-
         return view
     }
 

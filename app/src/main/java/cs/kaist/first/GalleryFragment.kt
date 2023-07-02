@@ -27,10 +27,9 @@ class GalleryFragment : Fragment() {
         // Inflate the layout for this fragment
         ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ_EXTERNAL_STORAGE)
 
-
         val view = inflater.inflate(R.layout.fragment_gallery, container, false)
-        val imageList = ArrayList<String>()
-
+        val imageList: ArrayList<String> = ArrayList<String>()
+        val index = arguments?.getInt("index")
 //        val imageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
 //            result ->
 //                if(result.resultCode == RESULT_OK){
@@ -60,6 +59,12 @@ class GalleryFragment : Fragment() {
                 imageList.add(uri)
             }
             cursor.close()
+        }
+
+        println("I'm index:$index")
+        if (index!=null){
+            println("Hello")
+            imageList.remove(imageList[index])
         }
 
         val recadapter = GalleryRecyclerAdapter(imageList,requireContext())
