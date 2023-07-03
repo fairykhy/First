@@ -1,6 +1,5 @@
 package cs.kaist.first
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -46,7 +45,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.musicItem -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.main_frame, MusicFragment()).commit()
+                    supportFragmentManager.beginTransaction().replace(R.id.main_frame, ReceiptFragment()).commit()
                     true
                 }
                 else -> false
