@@ -1,59 +1,109 @@
 package cs.kaist.first
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.media.Image
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import com.googlecode.tesseract.android.TessBaseAPI
+import org.w3c.dom.Text
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStream
+import java.io.OutputStream
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ReceiptFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ReceiptFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    //사용되는 이미지
+    var image : Bitmap? = null
+    // Tess API reference
+    var mTess : TessBaseAPI? = null
+    //언어 데이터가 있는 경로
+    var datapath = ""
+    var OCRTextView : TextView? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_receipt, container, false)
+        val receiptView = inflater.inflate(R.layout.fragment_receipt, container, false)
+        val runOCRTextView = receiptView.findViewById<TextView>(R.id.runOCRTextView)
+        OCRTextView = receiptView.findViewById(R.id.OCRTextView)
+
+        image = BitmapFactory.decodeResource(resources, R.drawable.sample2)
+        val receiptImageView = receiptView.findViewById<ImageView>(R.id.imageView)
+        receiptImageView.setImageBitmap(image)
+
+        // 언어파일 경로
+        datapath = requireContext().getFilesDir().toString() + "/tesseract/"
+
+        Log.d("datapath",datapath)
+        checkFile(File(datapath + "tessdata/"))
+
+        //Tesseract API 언어 세팅
+        val lang = "kor"
+
+        mTess = TessBaseAPI()
+        mTess!!.init(datapath,lang)
+        runOCRTextView.setOnClickListener {
+            processImage(receiptView)
+        }
+
+        return receiptView
+    }
+    fun processImage(view: View?) {
+        var OCRresult: String? = null
+        mTess!!.setImage(image)
+        OCRresult = mTess!!.utF8Text
+        OCRTextView!!.text = OCRresult
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ReceiptFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ReceiptFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    private val langFileName = "kor.traineddata"
+    private fun copyFiles() {
+        try {
+            val filepath = datapath + "tessdata/" + langFileName
+            val assetManager = requireActivity().assets
+            val instream: InputStream = assetManager.open(langFileName)
+            val outstream: OutputStream = FileOutputStream(filepath)
+            val buffer = ByteArray(1024)
+            var read: Int
+            while (instream.read(buffer).also { read = it } != -1) {
+                outstream.write(buffer, 0, read)
             }
+            outstream.flush()
+            outstream.close()
+            instream.close()
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
     }
+
+    fun checkFile(dir: File) {
+        //디렉토리가 없으면 디렉토리를 만들고 그후에 파일을 카피
+        if (!dir.exists() && dir.mkdirs()) {
+            copyFiles()
+        }
+        //디렉토리가 있지만 파일이 없으면 파일카피 진행
+        if (dir.exists()) {
+            val datafilepath = datapath + "tessdata/" + langFileName
+            val datafile = File(datafilepath)
+            if (!datafile.exists()) {
+                copyFiles()
+            }
+        }
+    }
+
+
 }
