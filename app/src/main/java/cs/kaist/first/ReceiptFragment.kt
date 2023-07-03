@@ -40,7 +40,7 @@ class ReceiptFragment : Fragment() {
         val runOCRTextView = receiptView.findViewById<TextView>(R.id.runOCRTextView)
         OCRTextView = receiptView.findViewById(R.id.OCRTextView)
 
-        image = BitmapFactory.decodeResource(resources, R.drawable.sample2)
+        image = BitmapFactory.decodeResource(resources, R.drawable.receipt1)
         val receiptImageView = receiptView.findViewById<ImageView>(R.id.imageView)
         receiptImageView.setImageBitmap(image)
 
@@ -66,6 +66,7 @@ class ReceiptFragment : Fragment() {
         mTess!!.setImage(image)
         OCRresult = mTess!!.utF8Text
         OCRTextView!!.text = OCRresult
+        println(OCRresult[0])
     }
 
     private val langFileName = "kor.traineddata"
@@ -103,6 +104,24 @@ class ReceiptFragment : Fragment() {
                 copyFiles()
             }
         }
+    }
+
+    fun ReceiptParsing (text: String) {
+        //매장명
+        val name_arr = arrayListOf<String>("매장", "매장명", "상호", "상호명", "가맹점", "가맹점명")
+        val total = arrayListOf<String>("합계", "합계금액", "총액", "판매금액", "결제금액")
+        for(x: String in name_arr){
+            if(text.contains(x)){
+                val idx = text.indexOf(x)
+                val store_name = text[idx+1].toString()
+            }
+        }
+//        for(y: String in total){
+//            if(text.contains(y)){
+//                val idx =
+//            }
+//        }
+
     }
 
 

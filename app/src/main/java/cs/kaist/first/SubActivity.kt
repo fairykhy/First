@@ -93,7 +93,6 @@ class SubActivity:  AppCompatActivity(){
 //            }
         }
         back.setOnClickListener(){
-
             val intent1 = Intent(this, MainActivity::class.java)
             intent1.putExtra("check", 10)
             intent1.putExtra("index", idx)

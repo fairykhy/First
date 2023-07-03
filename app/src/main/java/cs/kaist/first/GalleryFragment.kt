@@ -30,6 +30,7 @@ class GalleryFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_gallery, container, false)
         val imageList: ArrayList<String> = ArrayList<String>()
         val index = arguments?.getInt("index")
+
 //        val imageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
 //            result ->
 //                if(result.resultCode == RESULT_OK){
@@ -61,9 +62,9 @@ class GalleryFragment : Fragment() {
             cursor.close()
         }
 
-        println("I'm index:$index")
+//        println("I'm index:$index")
         if (index!=null){
-            println("Hello")
+//            println("Hello")
             imageList.remove(imageList[index])
         }
 
