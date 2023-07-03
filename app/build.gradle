@@ -37,6 +37,11 @@ android {
             }
         }
     }
+    packagingOptions {
+        pickFirst 'META-INF/INDEX.LIST'
+        exclude 'META-INF/DEPENDENCIES'
+    }
+
 }
 
 dependencies {
@@ -47,5 +52,9 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation ('com.google.cloud:google-cloud-vision:3.18.0') {
+        exclude group: 'com.rmtheis', module: 'tess-two'
+    }
     implementation 'com.rmtheis:tess-two:9.1.0'
+    implementation 'io.grpc:grpc-okhttp:1.41.0'
 }
