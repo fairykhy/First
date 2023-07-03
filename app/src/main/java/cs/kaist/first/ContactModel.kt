@@ -6,5 +6,6 @@ data class ContactModel(
     var number : String ?= null,
     var email : String ?= null,
     var group : String ?= null,
-    val thumnail : String ?= null
+    var thumnail : String ?= null,
+    var memo : String ?= null
 )

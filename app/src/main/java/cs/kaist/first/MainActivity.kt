@@ -36,4 +36,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    override fun onRestart() {
+        super.onRestart()
+        ContactFragment().refreshAdapter()
+    }
 }

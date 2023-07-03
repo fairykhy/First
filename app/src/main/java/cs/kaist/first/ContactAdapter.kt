@@ -9,11 +9,16 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
+import androidx.activity.result.ActivityResultLauncher
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 
-class ContactAdapter(val data: ArrayList<ContactModel>, val context: Context): RecyclerView.Adapter<ContactAdapter.Holder>(){
+class ContactAdapter(
+    val data: ArrayList<ContactModel>,
+    val context: Context
+): RecyclerView.Adapter<ContactAdapter.Holder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val itemview = LayoutInflater.from(parent.context).inflate(R.layout.contact_item, parent, false)
@@ -38,15 +43,23 @@ class ContactAdapter(val data: ArrayList<ContactModel>, val context: Context): R
             intent.putExtra("group",data[position].group.toString())
             intent.putExtra("thumnail",data[position].thumnail)
             intent.putExtra("id",data[position].id.toString())
+            intent.putExtra("memo",data[position].memo.toString())
+            intent.putExtra("position",position.toInt())
             ContextCompat.startActivity(holder.itemView.context,intent,null)
         }
-
     }
 
+    fun updateMemo(position: Int, memo: String) {
+        data[position].memo = memo
+        notifyItemChanged(position)
+    }
     class Holder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
         val firstTextview = itemView.findViewById<TextView>(R.id.firstTextView)
         val nameTextView = itemView.findViewById<TextView>(R.id.nameTextView)
 
     }
+
+
+
 }
