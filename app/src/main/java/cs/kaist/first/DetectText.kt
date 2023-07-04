@@ -20,26 +20,31 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
 import java.io.InputStream
+import androidx.fragment.app.Fragment
 
 object DetectText {
     @Throws(IOException::class)
-    fun detectText(context: Context, uri: Uri) {
+    fun detectText(context: Context, uri: Uri): ArrayList<String> {
         // TODO(developer): Replace these variables before running the sample.
         val directory = Environment.getExternalStorageDirectory().absolutePath
         val scope = CoroutineScope(Dispatchers.Main)
+        var result = arrayListOf<String>()
         // 코루틴을 실행합니다.
         scope.launch {
-            detectTextAsync(uri, context)
+            result = detectTextAsync(uri, context)
         }
+        return result
     }
 
     // Detects text in the specified image.
     @Throws(IOException::class)
-    suspend fun detectText(uri: Uri, context: Context) {
+    suspend fun detectText(uri: Uri, context: Context): ArrayList<String> {
         val credentials: GoogleCredentials = GoogleCredentials.fromStream(
             context.resources.openRawResource(R.raw.madcamp_first)
         )
         val scopedCredentials = credentials.createScoped("https://www.googleapis.com/auth/cloud-platform")
+
+        val resultarr = arrayListOf<String>()
 
         val requests: MutableList<AnnotateImageRequest> = ArrayList<AnnotateImageRequest>()
         val inputStream: InputStream = context.contentResolver.openInputStream(uri)!!
@@ -58,26 +63,30 @@ object DetectText {
             for (res in responses) {
                 if (res.hasError()) {
                     System.out.format("Error: %s%n", res.getError().getMessage())
-                    return
                 }
 
                 // For full list of available annotations, see http://g.co/cloud/vision/docs
                 for (annotation in res.getTextAnnotationsList()) {
-                    System.out.format("Text: %s%n", annotation.getDescription())
-                    System.out.format("Position : %s%n", annotation.getBoundingPoly())
+                    resultarr.add(annotation.description)
+//                    System.out.format("Text: %s%n", annotation.getDescription())
+//                    System.out.format("Position : %s%n", annotation.getBoundingPoly())
                 }
             }
         }
+        return resultarr
     }
 
-    fun detectTextAsync(uri: Uri, context: Context) {
+    fun detectTextAsync(uri: Uri, context: Context): ArrayList<String> {
         val scope = CoroutineScope(Dispatchers.IO)
+        var result = arrayListOf<String>()
         scope.launch {
             try {
-                detectText(uri, context)
+                result = detectText(uri, context)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
+        return result
     }
+
 }
