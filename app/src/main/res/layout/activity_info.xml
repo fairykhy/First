@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     tools:context=".InfoActivity">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/nameInfoTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:fontFamily="@font/kakaoregular"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/sofia"
         android:text="이황근"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -27,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
-        android:fontFamily="@font/kakaoregular"
+        android:fontFamily="@font/sofia"
         android:text="휴대전화"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
@@ -38,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:fontFamily="@font/kakaoregular"
+        android:fontFamily="@font/sofia"
         android:text="010-3909-4581"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/groupInfoTextView"
@@ -49,29 +53,35 @@
         android:id="@+id/callImageView"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:background="@drawable/back_background"
+        android:backgroundTint="#4680FF"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="10dp"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/numberInfoTextView"
-        app:srcCompat="@drawable/call" />
+        app:layout_constraintTop_toTopOf="@+id/MessengerImageView"
+        app:srcCompat="@drawable/call_new" />
 
     <ImageView
         android:id="@+id/MessengerImageView"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/back_background"
+        android:backgroundTint="#00B988"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="10dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/numberInfoTextView"
-        app:srcCompat="@drawable/messenger" />
+        app:srcCompat="@drawable/message_new" />
 
     <ImageView
         android:id="@+id/profileImageView"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="32dp"
 
-        android:background="@drawable/round_background"
+        android:background="@drawable/round_edittext"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,7 +93,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.08" />
+        app:layout_constraintGuide_percent="0.09" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
@@ -99,28 +109,29 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.75" />
 
-    <EditText
-        android:id="@+id/memoEditText"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/round_edittext"
-        android:ems="10"
-        android:fontFamily="@font/kakaoregular"
-        android:gravity="top|left"
-        android:hint="메모"
-        android:inputType="text"
-        android:paddingHorizontal="15dp"
-        android:paddingVertical="15dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/guideline5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/MessengerImageView" />
+        <EditText
+            android:id="@+id/memoEditText"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/back_background"
+            android:backgroundTint="#F7F7F7"
+            android:ems="10"
+            android:fontFamily="@font/sofia"
+            android:gravity="top|left"
+            android:hint="메모"
+            android:inputType="text"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="15dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/guideline5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/newNumberTextView" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline5"
@@ -134,11 +145,13 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/round_edittext"
-        android:fontFamily="@font/kakaoregular"
+        android:background="@drawable/back_background"
+        android:backgroundTint="#F7F7F7"
+        android:fontFamily="@font/sofia"
         android:gravity="center_vertical"
         android:paddingHorizontal="15dp"
         android:text="연락처 공유"
+        android:textColor="#000000"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/deleteTextView"
         app:layout_constraintEnd_toEndOf="@+id/memoEditText"
@@ -152,8 +165,9 @@
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/round_edittext"
-        android:fontFamily="@font/kakaoregular"
+        android:background="@drawable/back_background"
+        android:backgroundTint="#F7F7F7"
+        android:fontFamily="@font/sofia"
         android:gravity="center_vertical"
         android:paddingHorizontal="15dp"
         android:text="이 발신자 삭제"
@@ -165,5 +179,106 @@
         app:layout_constraintStart_toStartOf="@+id/shareTextView"
         app:layout_constraintTop_toBottomOf="@+id/shareTextView" />
 
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/back_background"
+        android:paddingVertical="4dp"
+        android:paddingRight="4dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/backbutton" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/back_background"
+        android:backgroundTint="#F45858"
+        android:scaleType="centerInside"
+
+        app:tint="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView7"
+        app:srcCompat="@drawable/delete" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/back_background"
+        android:backgroundTint="#F45858"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toTopOf="@+id/MessengerImageView"
+        app:srcCompat="@drawable/videocall_new" />
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/MessengerImageView"
+        app:srcCompat="@drawable/boundary" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.67" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/sofia"
+        android:text="휴대전화"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView10" />
+
+    <TextView
+        android:id="@+id/newNumberTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/sofia"
+        android:text="010-3909-4581"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/textView8"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+    <ImageView
+        android:id="@+id/newChatImageView"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_marginEnd="32dp"
+        app:tint="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/newCallImageView"
+        app:layout_constraintEnd_toStartOf="@+id/newCallImageView"
+        app:srcCompat="@drawable/message_new" />
+
+    <ImageView
+        android:id="@+id/newCallImageView"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_marginEnd="32dp"
+        app:tint="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/newNumberTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/call_new" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

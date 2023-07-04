@@ -64,7 +64,7 @@ class InfoActivity : AppCompatActivity() {
             startActivity(messengertIntent)
         }
 
-        memoTextView.text = memo
+        memoTextView.text = memo ?: ""
         val textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // 입력이 변경되기 전에 호출됩니다.
@@ -100,6 +100,7 @@ class InfoActivity : AppCompatActivity() {
 
             }
         }
+
         memoTextView.addTextChangedListener(textWatcher)
 
         shareTextView.setOnClickListener {

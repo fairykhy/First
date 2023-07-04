@@ -1,5 +1,6 @@
 package cs.kaist.first
 
+import FavoriteAdapter
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ListView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -133,6 +135,9 @@ class ContactFragment : Fragment() {
                 println(noteContactId)
                 println(note)
             }
+
+
+
             println(contactItems)
             cursor3?.close()
             //println(contactItems)
@@ -142,6 +147,13 @@ class ContactFragment : Fragment() {
             val contactRecyclerView = view.findViewById<RecyclerView>(R.id.contactRecyclerView)
             contactRecyclerView.layoutManager = LinearLayoutManager(context)
             contactRecyclerView.adapter = contactAdapter
+
+
+            val favoriteAdapter = FavoriteAdapter(contactItems, requireContext())
+            val favoriteRecyclerView = view.findViewById<RecyclerView>(R.id.favoriteListview)
+            val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            favoriteRecyclerView.layoutManager = layoutManager
+            favoriteRecyclerView.adapter = favoriteAdapter
 
 
             val plusImageView = view.findViewById<ImageView>(R.id.plusImageView)
