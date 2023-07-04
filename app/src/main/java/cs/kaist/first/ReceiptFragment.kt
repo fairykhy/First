@@ -1,148 +1,95 @@
 package cs.kaist.first
 
+import android.app.Activity.RESULT_OK
+import android.content.ContentResolver
+import android.content.ContentValues
+import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.media.Image
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
+import android.os.Environment
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
 import com.googlecode.tesseract.android.TessBaseAPI
-import org.w3c.dom.Text
 import java.io.File
-import java.io.FileNotFoundException
 import java.io.FileOutputStream
-import java.io.IOException
-import java.io.InputStream
 import java.io.OutputStream
 
 
 class ReceiptFragment : Fragment() {
-    //사용되는 이미지
-    var image : Bitmap? = null
-    // Tess API reference
-    var mTess : TessBaseAPI? = null
-    //언어 데이터가 있는 경로
-    var datapath = ""
-    var OCRTextView : TextView? = null
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val receiptView = inflater.inflate(R.layout.fragment_receipt, container, false)
-        val runOCRTextView = receiptView.findViewById<TextView>(R.id.runOCRTextView)
-        OCRTextView = receiptView.findViewById(R.id.OCRTextView)
 
-//        image = BitmapFactory.decodeResource(resources, R.drawable.sample1)
-//        val receiptImageView = receiptView.findViewById<ImageView>(R.id.imageView)
-//        receiptImageView.setImageBitmap(image)
-        DetectText.detectText(requireContext())
-//        thread{
-//            val url = URL("https://vision.googleapis.com/v1/images:annotate")
-////            val postData = "foo1=bar1&foo2=bar2"
-//
-//            val conn = url.openConnection()
-//            conn.doOutput = true
-//            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded")
-//            conn.setRequestProperty("Content-Length", postData.length.toString())
-//
-//            DataOutputStream(conn.getOutputStream()).use { it.writeBytes(postData) }
-//            BufferedReader(InputStreamReader(conn.getInputStream())).use { bf ->
-//                var line: String?
-//                while (bf.readLine().also { line = it } != null) {
-//                    println(line)
-//                }
-//            }
-//        }
+        val view = inflater.inflate(R.layout.fragment_receipt, container, false)
 
-//        // 언어파일 경로
-//        datapath = requireContext().getFilesDir().toString() + "/tesseract/"
-//
-//        Log.d("datapath",datapath)
-//        checkFile(File(datapath + "tessdata/"))
-//
-//        //Tesseract API 언어 세팅
-//        val lang = "kor"
-//
-//        mTess = TessBaseAPI()
-//        mTess!!.init(datapath,lang)
-//        runOCRTextView.setOnClickListener {
-//            processImage(receiptView)
-//        }
-//
-//        return receiptView
-//    }
-//    fun processImage(view: View?) {
-//        var OCRresult: String? = null
-//        mTess!!.setImage(image)
-//        OCRresult = mTess!!.utF8Text
-//        OCRTextView!!.text = OCRresult
-//        println(OCRresult[0])
-//    }
-//
-//    private val langFileName = "kor.traineddata"
-//    private fun copyFiles() {
-//        try {
-//            val filepath = datapath + "tessdata/" + langFileName
-//            val assetManager = requireActivity().assets
-//            val instream: InputStream = assetManager.open(langFileName)
-//            val outstream: OutputStream = FileOutputStream(filepath)
-//            val buffer = ByteArray(1024)
-//            var read: Int
-//            while (instream.read(buffer).also { read = it } != -1) {
-//                outstream.write(buffer, 0, read)
-//            }
-//            outstream.flush()
-//            outstream.close()
-//            instream.close()
-//        } catch (e: FileNotFoundException) {
-//            e.printStackTrace()
-//        } catch (e: IOException) {
-//            e.printStackTrace()
-//        }
-//    }
-//
-//    fun checkFile(dir: File) {
-//        //디렉토리가 없으면 디렉토리를 만들고 그후에 파일을 카피
-//        if (!dir.exists() && dir.mkdirs()) {
-//            copyFiles()
-//        }
-//        //디렉토리가 있지만 파일이 없으면 파일카피 진행
-//        if (dir.exists()) {
-//            val datafilepath = datapath + "tessdata/" + langFileName
-//            val datafile = File(datafilepath)
-//            if (!datafile.exists()) {
-//                copyFiles()
-//            }
-//        }
-//    }
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
-//    fun ReceiptParsing (text: String) {
-//        val text_arr = text.split(" ")
-//        //매장명
-//        val name_arr = arrayListOf<String>("매장", "매장명", "상호", "상호명", "가맹점", "가맹점명")
-//        val total = arrayListOf<String>("합계", "합계금액", "총액", "판매금액", "결제금액")
-//        for(x: String in name_arr){
-//            if(text_arr.contains(x)){
-//                val idx = text_arr.indexOf(x)
-//                val store_name = text_arr[idx+1].toString()
-//            }
-//        }
-////        for(y: String in total){
-////            if(text.contains(y)){
-////                val idx =
-////            }
-//        }
-        return  null
-//
+//        intent.type = "image/*"
+//        intent.action = Intent.ACTION_GET_CONTENT
+        launcher.launch(intent)
+//        startActivity(intent)
+
+        return view
     }
+
+    val launcher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+//            val intent: Intent? = result.data
+//            val uri: Uri? = intent?.data
+            val data: Intent? = result.data
+//            val imagePath: String? = data?.getStringExtra(MediaStore.EXTRA_OUTPUT)
+            val imageBitmap = data?.extras?.get("data") as Bitmap
+            val path = bitmapToUri(imageBitmap)
+
+            println(path)
+            if (path != null) {
+                DetectText.detectText(requireContext(), path)
+            }
+
+        }
+    }
+
+    private fun bitmapToUri(bitmap: Bitmap): String {
+        val resolver: ContentResolver = requireContext().contentResolver
+
+//        val imagesDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+        val imagesDirectory =  requireContext().filesDir
+        val fileName = "receipt2.jpg"
+        val imageFile = File(imagesDirectory, fileName)
+
+        // 비트맵을 JPEG 파일로 저장
+        var outputStream: OutputStream? = null
+        try {
+            outputStream = FileOutputStream(imageFile)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            outputStream?.close()
+        }
+
+        // 저장한 이미지 파일의 Uri를 가져오기
+//        val contentValues = ContentValues().apply {
+//            put(MediaStore.Images.Media.DISPLAY_NAME, fileName)
+//            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+//            put(MediaStore.Images.Media.DATA, imageFile.absolutePath)
+//        }
+        return imageFile.absolutePath
+    }
+
 
 
 }

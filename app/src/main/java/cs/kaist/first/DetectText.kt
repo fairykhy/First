@@ -1,6 +1,7 @@
 package cs.kaist.first
 
 import android.content.Context
+import android.net.Uri
 import android.os.Environment
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.vision.v1.AnnotateImageRequest
@@ -19,17 +20,22 @@ import java.io.IOException
 
 object DetectText {
     @Throws(IOException::class)
-    fun detectText(context: Context) {
+    fun detectText(context: Context, path: String) {
         // TODO(developer): Replace these variables before running the sample.
-        val directory = Environment.getExternalStorageDirectory().absolutePath
-        val filePath = "$directory/Download/30004_craw1.jpg"
+//        val directory = Environment.getExternalStorageDirectory().absolutePath
+//        val directory = context.getExternalFilesDir(null)?.absolutePath
+//        val fileName = "receipt2.jpg"
+//        val filePath = "$directory/$fileName"
+
+//        val filePath = "$directory/Download/30004_craw1.jpg"
 //        val filePath = "C:/Users/SAMSUNG/Desktop/receipt1.jpg"/
+        println(path)
         val scope = CoroutineScope(Dispatchers.Main)
 
 // 코루틴을 실행합니다.
         scope.launch {
             // detectText() 메서드를 호출합니다.
-            detectTextAsync(filePath, context)
+            detectTextAsync(path, context)
         }
     }
 
@@ -71,7 +77,6 @@ object DetectText {
 
     fun detectTextAsync(filePath: String?, context: Context) {
         val scope = CoroutineScope(Dispatchers.IO)
-
         scope.launch {
             try {
                 detectText(filePath, context)
