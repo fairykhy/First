@@ -1,148 +1,147 @@
 package cs.kaist.first
 
+import android.app.Activity
+import android.app.Activity.RESULT_OK
+import android.content.ContentResolver
+import android.content.ContentValues
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.media.Image
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
+import android.os.Environment
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.googlecode.tesseract.android.TessBaseAPI
-import org.w3c.dom.Text
 import java.io.File
-import java.io.FileNotFoundException
 import java.io.FileOutputStream
-import java.io.IOException
-import java.io.InputStream
 import java.io.OutputStream
-
+import java.text.SimpleDateFormat
+import android.Manifest
+import android.Manifest.permission.CAMERA
+import android.graphics.ImageDecoder
+import java.io.IOException
+import java.util.Date
+import android.content.Context
 
 class ReceiptFragment : Fragment() {
-    //사용되는 이미지
-    var image : Bitmap? = null
-    // Tess API reference
-    var mTess : TessBaseAPI? = null
-    //언어 데이터가 있는 경로
-    var datapath = ""
-    var OCRTextView : TextView? = null
 
+    private val GALLERY = 1
+    private val REQUEST_IMAGE_CAPTURE = 2
+    private val REQUEST_CREATE_EX = 3
 
+        private fun requestPermission(){
+        ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,CAMERA),1)
+
+    }
+    private fun checkPermission():Boolean{
+
+        return (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(requireContext(),
+            Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+
+    }
+    @Override
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if( requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            Toast.makeText(requireContext(), "권한 설정 OK", Toast.LENGTH_SHORT).show()
+        }
+        else
+        {
+            Toast.makeText(requireContext(), "권한 허용 안됨", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val receiptView = inflater.inflate(R.layout.fragment_receipt, container, false)
-        val runOCRTextView = receiptView.findViewById<TextView>(R.id.runOCRTextView)
-        OCRTextView = receiptView.findViewById(R.id.OCRTextView)
 
-//        image = BitmapFactory.decodeResource(resources, R.drawable.sample1)
-//        val receiptImageView = receiptView.findViewById<ImageView>(R.id.imageView)
-//        receiptImageView.setImageBitmap(image)
-        DetectText.detectText(requireContext())
-//        thread{
-//            val url = URL("https://vision.googleapis.com/v1/images:annotate")
-////            val postData = "foo1=bar1&foo2=bar2"
-//
-//            val conn = url.openConnection()
-//            conn.doOutput = true
-//            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded")
-//            conn.setRequestProperty("Content-Length", postData.length.toString())
-//
-//            DataOutputStream(conn.getOutputStream()).use { it.writeBytes(postData) }
-//            BufferedReader(InputStreamReader(conn.getInputStream())).use { bf ->
-//                var line: String?
-//                while (bf.readLine().also { line = it } != null) {
-//                    println(line)
-//                }
-//            }
-//        }
+        val view = inflater.inflate(R.layout.fragment_receipt, container, false)
 
-//        // 언어파일 경로
-//        datapath = requireContext().getFilesDir().toString() + "/tesseract/"
-//
-//        Log.d("datapath",datapath)
-//        checkFile(File(datapath + "tessdata/"))
-//
-//        //Tesseract API 언어 세팅
-//        val lang = "kor"
-//
-//        mTess = TessBaseAPI()
-//        mTess!!.init(datapath,lang)
-//        runOCRTextView.setOnClickListener {
-//            processImage(receiptView)
-//        }
-//
-//        return receiptView
-//    }
-//    fun processImage(view: View?) {
-//        var OCRresult: String? = null
-//        mTess!!.setImage(image)
-//        OCRresult = mTess!!.utF8Text
-//        OCRTextView!!.text = OCRresult
-//        println(OCRresult[0])
-//    }
-//
-//    private val langFileName = "kor.traineddata"
-//    private fun copyFiles() {
-//        try {
-//            val filepath = datapath + "tessdata/" + langFileName
-//            val assetManager = requireActivity().assets
-//            val instream: InputStream = assetManager.open(langFileName)
-//            val outstream: OutputStream = FileOutputStream(filepath)
-//            val buffer = ByteArray(1024)
-//            var read: Int
-//            while (instream.read(buffer).also { read = it } != -1) {
-//                outstream.write(buffer, 0, read)
-//            }
-//            outstream.flush()
-//            outstream.close()
-//            instream.close()
-//        } catch (e: FileNotFoundException) {
-//            e.printStackTrace()
-//        } catch (e: IOException) {
-//            e.printStackTrace()
-//        }
-//    }
-//
-//    fun checkFile(dir: File) {
-//        //디렉토리가 없으면 디렉토리를 만들고 그후에 파일을 카피
-//        if (!dir.exists() && dir.mkdirs()) {
-//            copyFiles()
-//        }
-//        //디렉토리가 있지만 파일이 없으면 파일카피 진행
-//        if (dir.exists()) {
-//            val datafilepath = datapath + "tessdata/" + langFileName
-//            val datafile = File(datafilepath)
-//            if (!datafile.exists()) {
-//                copyFiles()
-//            }
-//        }
-//    }
-
-//    fun ReceiptParsing (text: String) {
-//        val text_arr = text.split(" ")
-//        //매장명
-//        val name_arr = arrayListOf<String>("매장", "매장명", "상호", "상호명", "가맹점", "가맹점명")
-//        val total = arrayListOf<String>("합계", "합계금액", "총액", "판매금액", "결제금액")
-//        for(x: String in name_arr){
-//            if(text_arr.contains(x)){
-//                val idx = text_arr.indexOf(x)
-//                val store_name = text_arr[idx+1].toString()
-//            }
-//        }
-////        for(y: String in total){
-////            if(text.contains(y)){
-////                val idx =
-////            }
-//        }
-        return  null
-//
+        if(checkPermission()){
+            dispatchTakePictureIntentEx(view)
+        }
+        else{
+            requestPermission()
+        }
+        return view
     }
+
+    fun createImageUri(filename: String, mimeType: String): Uri? {
+        val storageDir: File? = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val file = File(storageDir, filename)
+
+        var values = ContentValues()
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, filename)
+        values.put(MediaStore.Images.Media.MIME_TYPE, mimeType)
+        values.put(MediaStore.Images.Media.DATA, file.absolutePath) // 파일 경로 추가
+
+        return requireContext().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+    }
+
+    private var photoURI : Uri? = null
+
+    private fun dispatchTakePictureIntentEx(view: View): String {
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File? = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val takePictureIntent : Intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        val fileName = "JPEG_${timeStamp}_"
+        val uri : Uri? =   createImageUri(fileName, "image/jpeg")
+        photoURI = uri
+        val photo = view.findViewById<ImageView>(R.id.imageView)
+        photo.setImageURI(uri)
+        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+        startActivityForResult(takePictureIntent, REQUEST_CREATE_EX)
+        return fileName
+    }
+    fun loadBitmapFromMediaStoreBy(photoUri: Uri) : Bitmap?{
+        var image: Bitmap? = null
+        try{
+            image = if(Build.VERSION.SDK_INT > 27){
+                val source: ImageDecoder.Source =
+                    ImageDecoder.createSource(requireContext().contentResolver, photoUri)
+                ImageDecoder.decodeBitmap(source)
+
+            }else{
+                MediaStore.Images.Media.getBitmap(requireContext().contentResolver, photoUri)
+            }
+        }catch(e: IOException){
+            e.printStackTrace()
+        }
+        return image
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CREATE_EX && resultCode == RESULT_OK) {
+//            println(data)
+            val bitmap = loadBitmapFromMediaStoreBy(photoURI!!)
+            val image = requireView().findViewById<ImageView>(R.id.imageView)
+            image.setImageBitmap(bitmap)
+
+            DetectText.detectText(requireContext(), photoURI!!)
+        }
+    }
+
 
 
 }
