@@ -12,7 +12,7 @@
 - 이황근
 ---
 ### B. 개발 환경
-- OS: Windows, Mac
+- OS: Android
 - Language: Kotlin
 - IDE: Android Studio
 - Target Device: Galaxy S10e
