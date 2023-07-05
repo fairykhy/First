@@ -1,8 +1,7 @@
 package cs.kaist.first
 
-import android.app.Activity
+import ReceiptExpandableListAdapter
 import android.app.Activity.RESULT_OK
-import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -16,25 +15,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.ActivityResultCallback
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.googlecode.tesseract.android.TessBaseAPI
 import java.io.File
-import java.io.FileOutputStream
-import java.io.OutputStream
 import java.text.SimpleDateFormat
 import android.Manifest
 import android.Manifest.permission.CAMERA
 import android.graphics.ImageDecoder
+import android.widget.ExpandableListView
 import java.io.IOException
 import java.util.Date
-import android.content.Context
 
 class ReceiptFragment : Fragment() {
 
@@ -77,14 +69,38 @@ class ReceiptFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_receipt, container, false)
 
+
+        val myApp = requireContext().applicationContext as MyApp
+        val data = myApp.dayByDayData
+        val AddImageView = view.findViewById<ImageView>(R.id.plusImageView)
+        AddImageView.setOnClickListener {
+            println("check")
+            myApp.dayByDayData.clear()
+            println(myApp.dayByDayData)
+            val AddIntent = Intent(requireContext(),AddReceiptActivity::class.java)
+            startActivity(AddIntent)
+
+        }
+            println(data)
+        //val DayByDayAdapter = DayByDayAdapter(requireContext(),data)
+        //val dayByDayListView = view.findViewById<ListView>(R.id.dayByDayListView)
+        //dayByDayListView.adapter = DayByDayAdapter
+
+        val dayByDayExpandableListView = view.findViewById<ExpandableListView>(R.id.dayByDayListView)
+        val expandableListAdapter = ReceiptExpandableListAdapter(requireContext(), data)
+        dayByDayExpandableListView.setAdapter(expandableListAdapter)
+        for (i in 0 until expandableListAdapter.groupCount) {
+            dayByDayExpandableListView.expandGroup(i)
+        }
         if(checkPermission()){
-            dispatchTakePictureIntentEx(view)
+            //dispatchTakePictureIntentEx(view)
         }
         else{
             requestPermission()
         }
         return view
     }
+
 
     fun createImageUri(filename: String, mimeType: String): Uri? {
         val storageDir: File? = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
@@ -107,8 +123,8 @@ class ReceiptFragment : Fragment() {
         val fileName = "JPEG_${timeStamp}_"
         val uri : Uri? =   createImageUri(fileName, "image/jpeg")
         photoURI = uri
-        val photo = view.findViewById<ImageView>(R.id.imageView)
-        photo.setImageURI(uri)
+        //val photo = view.findViewById<ImageView>(R.id.lineImageView)
+        //photo.setImageURI(uri)
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
         startActivityForResult(takePictureIntent, REQUEST_CREATE_EX)
         return fileName
@@ -135,13 +151,30 @@ class ReceiptFragment : Fragment() {
         if (requestCode == REQUEST_CREATE_EX && resultCode == RESULT_OK) {
 //            println(data)
             val bitmap = loadBitmapFromMediaStoreBy(photoURI!!)
-            val image = requireView().findViewById<ImageView>(R.id.imageView)
-            image.setImageBitmap(bitmap)
+            //val image = requireView().findViewById<ImageView>(R.id.lineImageView)
+            //image.setImageBitmap(bitmap)
 
             DetectText.detectText(requireContext(), photoURI!!)
         }
     }
 
+    override fun onResume() {
+        val myApp = requireContext().applicationContext as MyApp
+        val data = myApp.dayByDayData
+        val dayByDayExpandableListView = view?.findViewById<ExpandableListView>(R.id.dayByDayListView)
+        val expandableListAdapter = ReceiptExpandableListAdapter(requireContext(), data)
+        dayByDayExpandableListView?.setAdapter(expandableListAdapter)
+        for (i in 0 until expandableListAdapter.groupCount) {
+            dayByDayExpandableListView?.expandGroup(i)
+        }
+        if(checkPermission()){
+            //dispatchTakePictureIntentEx(view)
+        }
+        else{
+            requestPermission()
+        }
+        super.onResume()
+    }
 
 
 }

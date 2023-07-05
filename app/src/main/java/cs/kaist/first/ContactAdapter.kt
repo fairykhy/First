@@ -9,6 +9,7 @@ import android.transition.Transition
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
@@ -41,29 +42,9 @@ class ContactAdapter(
         //holder.firstTextview?.text  = data[position]?.name?.get(0).toString()
         //holder.nameTextView?.text = data[position]?.name
         val position = holder.getAdapterPosition()
-        if (data[position].thumnail != null) {
-            val thumbnailUri = Uri.parse(data[position].thumnail)
-            Glide.with(holder.itemView.context)
-                .load(thumbnailUri)
-                .into(object : CustomTarget<Drawable>() {
-                    override fun onResourceReady(
-                        resource: Drawable,
-                        transition: com.bumptech.glide.request.transition.Transition<in Drawable>?
-                    ) {
-                        resource.setBounds(0, 0, 50, 50)  // 이곳에 원하는 크기를 입력하세요
-                        holder.firstTextview.setCompoundDrawables(null, resource, null, null)
-                        println(position)
-                        holder.firstTextview.text = ""
-                    }
 
-                    override fun onLoadCleared(placeholder: Drawable?) {
-                        // Optional: Implement if needed
-                    }
-                })
-        } else {
-            holder.firstTextview.text = data[position].name?.get(0).toString()
-        }
-
+        holder.firstTextview.clipToOutline = true
+        holder.firstTextview.setImageURI(data[position].thumnail?.toUri())
         holder.nameTextView.text = data[position].name
         holder.numberTextView.text = data[position].number.toString()
         holder.itemView.setOnClickListener{
@@ -86,7 +67,7 @@ class ContactAdapter(
     }
     class Holder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
-        val firstTextview = itemView.findViewById<TextView>(R.id.firstTextView)
+        val firstTextview = itemView.findViewById<ImageView>(R.id.firstTextView)
         val nameTextView = itemView.findViewById<TextView>(R.id.nameTextView)
         val numberTextView = itemView.findViewById<TextView>(R.id.numberTextView)
 

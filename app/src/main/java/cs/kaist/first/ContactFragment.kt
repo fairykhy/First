@@ -114,7 +114,7 @@ class ContactFragment : Fragment() {
                 ContactsContract.Data.CONTACT_ID,
                 ContactsContract.CommonDataKinds.Note.NOTE
             )
-            var count = 0
+            var count = 1
             val cursor3 = requireActivity().contentResolver.query(
                 ContactsContract.Data.CONTENT_URI,
                 noteProjection,
@@ -140,16 +140,55 @@ class ContactFragment : Fragment() {
 
             println(contactItems)
             cursor3?.close()
+
             //println(contactItems)
             contactItems.sortBy { it.name }
+
+
+
+
             cursor?.close()
+
+            val favoriteContactItems = ArrayList<ContactModel>()
+
+
+            val new_projection = arrayOf(
+                ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
+                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                ContactsContract.CommonDataKinds.Phone.NUMBER,
+                ContactsContract.Contacts.PHOTO_THUMBNAIL_URI,
+                ContactsContract.Contacts.STARRED
+            )
+
+            val selection = ContactsContract.Contacts.STARRED + "=?"
+            val selectionArgs = arrayOf("1")
+
+            val new_cursor =
+                requireActivity().contentResolver.query(phoneUri, new_projection, selection, selectionArgs, null)
+
+            while (new_cursor?.moveToNext() ?: false) {
+                val id = new_cursor?.getString(0)
+                val name = new_cursor?.getString(1)
+                val number = new_cursor?.getString(2)
+                val thumnailId = new_cursor?.getString(3)
+                val isStarred = new_cursor?.getString(4)?.toInt() == 1
+
+                if (isStarred) {
+                    val contact = ContactModel(id, name, number, "", "", thumnailId, "")
+                    favoriteContactItems.add(contact)
+                }
+            }
+
+            new_cursor?.close()
+
+            println(favoriteContactItems)
             contactAdapter = ContactAdapter(contactItems, requireContext())
             val contactRecyclerView = view.findViewById<RecyclerView>(R.id.contactRecyclerView)
             contactRecyclerView.layoutManager = LinearLayoutManager(context)
             contactRecyclerView.adapter = contactAdapter
 
 
-            val favoriteAdapter = FavoriteAdapter(contactItems, requireContext())
+            val favoriteAdapter = FavoriteAdapter(favoriteContactItems, requireContext())
             val favoriteRecyclerView = view.findViewById<RecyclerView>(R.id.favoriteListview)
             val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             favoriteRecyclerView.layoutManager = layoutManager

@@ -5,15 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="70dp">
 
-    <TextView
+    <ImageView
         android:id="@+id/firstTextView"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="@drawable/contact_background"
+        android:background="@drawable/back_background"
         android:drawablePadding="4dp"
         android:fontFamily="@font/kakaoregular"
         android:gravity="center"
-        android:text="이"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="30sp"

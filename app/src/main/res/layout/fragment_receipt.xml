@@ -1,58 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ReceiptFragment">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:background="#ffffff"
-            android:id="@+id/ImageContainer">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/imageView"
-                android:src="@drawable/sample1"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
-            android:layout_below="@id/ImageContainer"
-            android:clickable="true"
-            android:background="#166e78"
-            android:id="@+id/OCRButtonContainer">
-
-            <TextView
-                android:id="@+id/runOCRTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:clickable="true"
-                android:text="RUN OCR"
-                android:textColor="#ffffff"
-                android:textSize="18dp" />
-
-        </RelativeLayout>
-
+        <ImageView
+            android:id="@+id/plusImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/plus_icon"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="8dp"
+            android:src="@drawable/pluscall"
+            app:layout_constraintEnd_toEndOf="@+id/dayByDayListView"
+            app:layout_constraintTop_toTopOf="parent" />
         <TextView
+            android:id="@+id/dateTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="여기에 결과 출력"
-            android:id="@+id/OCRTextView"
-            android:textSize="15dp"
-            android:textColor="#169cdf"
-            android:layout_below="@id/OCRButtonContainer"
-            android:layout_centerHorizontal="true"
-            android:background="#fff"
-            android:padding="10dp"/>
-    </RelativeLayout>
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/sofia"
+            android:text="7월"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
+
+        <TextView
+            android:id="@+id/outTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/sofia"
+            android:text="지출"
+            app:layout_constraintStart_toStartOf="@+id/dateTextView"
+            app:layout_constraintTop_toBottomOf="@+id/dateTextView" />
+
+        <TextView
+            android:id="@+id/inTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="수입"
+            app:layout_constraintStart_toStartOf="@+id/outTextView"
+            app:layout_constraintTop_toBottomOf="@+id/outTextView" />
+
+        <TextView
+            android:id="@+id/outMoneyTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/sofia"
+            android:text="144,310원"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/outTextView"
+            app:layout_constraintStart_toEndOf="@+id/outTextView"
+            app:layout_constraintTop_toTopOf="@+id/outTextView" />
+
+        <TextView
+            android:id="@+id/inMoneyTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/sofia"
+            android:text="22,500원"
+            android:textColor="#46DE8D"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/inTextView"
+            app:layout_constraintStart_toEndOf="@+id/inTextView"
+            app:layout_constraintTop_toTopOf="@+id/inTextView" />
+
+        <ExpandableListView
+            android:id="@+id/dayByDayListView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="100dp"
+            android:groupIndicator="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/inMoneyTextView" />
+
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/sofia"
+            android:text="가계부"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </FrameLayout>
