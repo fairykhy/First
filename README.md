@@ -24,7 +24,7 @@
 
 ![KakaoTalk_20230705_195204592_01](https://github.com/fairykhy/First/assets/138121077/c204d95e-4861-46ec-95ba-066ac80663df)
 ![KakaoTalk_20230705_195204592_05](https://github.com/fairykhy/First/assets/138121077/a251f7ed-4a2f-4b39-9717-8f8fe9d5f139)
-<img src="KakaoTalk_20230705_195204592_01.png" width="200" height="400"/>
+<img src="https://github.com/fairykhy/First/assets/138121077/c204d95e-4861-46ec-95ba-066ac80663df" width="200" height="400"/>
 
 #### Major features
 - 안드로이드에 내장되어 있는 연락처를 불러와 띄울 수 있습니다.
