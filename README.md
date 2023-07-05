@@ -95,7 +95,7 @@
 #### Google OCR api
 https://cloud.google.com/vision/docs/ocr?hl=ko
 
-<img src="https://github.com/fairykhy/First/assets/138121077/491baceb-3063-4d7e-bbbd-fe48b12e4d73" width="250" height="500"/>
+<img src="https://github.com/fairykhy/First/assets/138121077/491baceb-3063-4d7e-bbbd-fe48b12e4d73" width="500" height="250"/>
 
 
 - 광 문자 인식 기술인 OCR 기술을 활영하여 텍스트 인식을 실시하였습니다.
