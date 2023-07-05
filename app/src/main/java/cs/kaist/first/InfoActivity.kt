@@ -13,6 +13,7 @@ import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.net.toUri
 import org.w3c.dom.Text
 
@@ -35,7 +36,7 @@ class InfoActivity : AppCompatActivity() {
         val numberInfoTextView = findViewById<TextView>(R.id.numberInfoTextView)
         val profileImageView = findViewById<ImageView>(R.id.profileImageView)
         val shareTextView = findViewById<TextView>(R.id.shareTextView)
-
+        val newNumberText = findViewById<TextView>(R.id.newNumberTextView)
 
         if(thumnailId!=null){
             profileImageView.clipToOutline = true
@@ -63,8 +64,13 @@ class InfoActivity : AppCompatActivity() {
             messengertIntent.data = Uri.parse( "smsto:"+number)
             startActivity(messengertIntent)
         }
+        if(memo == "null"){
+            memoTextView.text = ""
+        }
+        else {
+            memoTextView.text = memo
+        }
 
-        memoTextView.text = memo ?: ""
         val textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // 입력이 변경되기 전에 호출됩니다.
@@ -114,13 +120,15 @@ class InfoActivity : AppCompatActivity() {
         }
 
         deleteTextView.setOnClickListener {
-            contentResolver.delete(ContactsContract.RawContacts.CONTENT_URI,"${ContactsContract.RawContacts.CONTACT_ID}=?", arrayOf(id.toString()))
-
+            //contentResolver.delete(ContactsContract.RawContacts.CONTENT_URI,"${ContactsContract.RawContacts.CONTACT_ID}=?", arrayOf(id.toString()))
+            Toast.makeText(this,"연락처가 정상적으로 삭제 되었습니다.",Toast.LENGTH_SHORT).show()
         }
 
 
         nameInfoTextView.text = name
         numberInfoTextView.text = number
+
+        newNumberText.text = number
 
 
     }

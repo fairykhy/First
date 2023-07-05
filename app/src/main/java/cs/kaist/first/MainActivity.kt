@@ -1,8 +1,10 @@
 package cs.kaist.first
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -12,6 +14,13 @@ class MainActivity : AppCompatActivity() {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.background = null
         bottomNavigationView.menu.getItem(2).isEnabled = false
+
+
+        val camera_btn : FloatingActionButton = findViewById(R.id.addButton)
+
+        val cameraFragment = CameraFragment()
+
+
         val intent = intent
         val check = intent.getIntExtra("check", 0)
         if(check == 10){
@@ -34,6 +43,8 @@ class MainActivity : AppCompatActivity() {
         }
         supportFragmentManager.beginTransaction().add(R.id.main_frame, ContactFragment()).commit()
 
+        val fragment = supportFragmentManager.findFragmentById(R.id.main_frame)
+
         bottomNavigationView.setOnItemSelectedListener {item ->
             when(item.itemId){
                 R.id.contactItem -> {
@@ -52,6 +63,12 @@ class MainActivity : AppCompatActivity() {
                 }
                 else -> false
             }
+        }
+        camera_btn.setOnClickListener{
+
+                supportFragmentManager.beginTransaction().replace(R.id.main_frame, CameraFragment()).commit()
+
+
         }
     }
 

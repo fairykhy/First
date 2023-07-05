@@ -8,24 +8,27 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:background="@drawable/circle"
         android:backgroundTint="#E2D2FF"
         android:paddingHorizontal="8dp"
         android:paddingVertical="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/camera" />
+        app:srcCompat="@drawable/arrow" />
+
 
     <TextView
         android:id="@+id/companyNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
         android:fontFamily="@font/sofia"
+        android:textStyle="bold"
         android:text="카카오페이"
-        android:textSize="12sp"
+        android:textSize="14sp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="1dp"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,8 +36,10 @@
         android:id="@+id/typeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:text="이체 | KB나라사랑우대통장"
-        android:textSize="8sp"
+        android:textColor="#737373"
+        android:textSize="9sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="@+id/companyNameTextView" />
 
@@ -44,7 +49,9 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/sofia"
         android:text="-100,000원"
-        android:textSize="16sp"
+        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

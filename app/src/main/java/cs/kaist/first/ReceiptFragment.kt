@@ -1,6 +1,6 @@
 package cs.kaist.first
 
-import ReceiptExpandableListAdapter
+
 import android.app.Activity.RESULT_OK
 import android.content.ContentValues
 import android.content.Intent
@@ -30,6 +30,8 @@ import java.util.Date
 
 class ReceiptFragment : Fragment() {
 
+
+    val info_arr = arguments?.getStringArray("result") // index 0: 매장이름, 1: 결제일자, 2: 금액, 3: 결제방법
     private val GALLERY = 1
     private val REQUEST_IMAGE_CAPTURE = 2
     private val REQUEST_CREATE_EX = 3
@@ -72,12 +74,15 @@ class ReceiptFragment : Fragment() {
 
         val myApp = requireContext().applicationContext as MyApp
         val data = myApp.dayByDayData
+
         val AddImageView = view.findViewById<ImageView>(R.id.plusImageView)
         AddImageView.setOnClickListener {
             println("check")
-            myApp.dayByDayData.clear()
+            //myApp.dayByDayData.clear()
             println(myApp.dayByDayData)
             val AddIntent = Intent(requireContext(),AddReceiptActivity::class.java)
+            AddIntent.putExtra("price","")
+            AddIntent.putExtra("company","")
             startActivity(AddIntent)
 
         }
@@ -85,13 +90,23 @@ class ReceiptFragment : Fragment() {
         //val DayByDayAdapter = DayByDayAdapter(requireContext(),data)
         //val dayByDayListView = view.findViewById<ListView>(R.id.dayByDayListView)
         //dayByDayListView.adapter = DayByDayAdapter
-
-        val dayByDayExpandableListView = view.findViewById<ExpandableListView>(R.id.dayByDayListView)
-        val expandableListAdapter = ReceiptExpandableListAdapter(requireContext(), data)
-        dayByDayExpandableListView.setAdapter(expandableListAdapter)
-        for (i in 0 until expandableListAdapter.groupCount) {
-            dayByDayExpandableListView.expandGroup(i)
+        if(myApp.count==0){
+            val dayByDayExpandableListView = view.findViewById<ExpandableListView>(R.id.dayByDayListView)
+            val expandableListAdapter = ReceiptExpandableListAdapter(requireContext(), data)
+            dayByDayExpandableListView.setAdapter(expandableListAdapter)
+            for (i in 0 until expandableListAdapter.groupCount) {
+                dayByDayExpandableListView.expandGroup(i)
+            }
         }
+        else {
+            val dayByDayExpandableListView = view.findViewById<ExpandableListView>(R.id.dayByDayListView)
+            val expandableListAdapter = ReceiptExpandableListAdapter(requireContext(), myApp.test)
+            dayByDayExpandableListView.setAdapter(expandableListAdapter)
+            for (i in 0 until expandableListAdapter.groupCount) {
+                dayByDayExpandableListView.expandGroup(i)
+            }
+        }
+
         if(checkPermission()){
             //dispatchTakePictureIntentEx(view)
         }
@@ -158,7 +173,7 @@ class ReceiptFragment : Fragment() {
         }
     }
 
-    override fun onResume() {
+    /*override fun onResume() {
         val myApp = requireContext().applicationContext as MyApp
         val data = myApp.dayByDayData
         val dayByDayExpandableListView = view?.findViewById<ExpandableListView>(R.id.dayByDayListView)
@@ -174,7 +189,7 @@ class ReceiptFragment : Fragment() {
             requestPermission()
         }
         super.onResume()
-    }
+    }*/
 
 
 }
