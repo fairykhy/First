@@ -16,6 +16,8 @@ class MainActivity : AppCompatActivity() {
 
         val camera_btn : FloatingActionButton = findViewById(R.id.addButton)
 
+        val cameraFragment = CameraFragment()
+
         val intent = intent
         val check = intent.getIntExtra("check", 0)
         if(check == 10){
@@ -51,7 +53,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.musicItem -> {
-//                    supportFragmentManager.beginTransaction().replace(R.id.main_frame, ReceiptFragment()).commit()
+                    supportFragmentManager.beginTransaction().replace(R.id.main_frame, ReceiptFragment()).commit()
                     true
                 }
                 else -> false
