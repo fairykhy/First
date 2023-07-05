@@ -21,10 +21,8 @@
 ### C. 어플리케이션 소개
 
 ### TAB 1 - 연락처
-
-![KakaoTalk_20230705_195204592_01](https://github.com/fairykhy/First/assets/138121077/c204d95e-4861-46ec-95ba-066ac80663df)
-![KakaoTalk_20230705_195204592_05](https://github.com/fairykhy/First/assets/138121077/a251f7ed-4a2f-4b39-9717-8f8fe9d5f139)
-<img src="https://github.com/fairykhy/First/assets/138121077/c204d95e-4861-46ec-95ba-066ac80663df" width="200" height="400"/>
+<img src="https://github.com/fairykhy/First/assets/138121077/c204d95e-4861-46ec-95ba-066ac80663df" width="250" height="500"/>
+<img src="https://github.com/fairykhy/First/assets/138121077/a251f7ed-4a2f-4b39-9717-8f8fe9d5f139" width="250" height="500"/>
 
 #### Major features
 - 안드로이드에 내장되어 있는 연락처를 불러와 띄울 수 있습니다.
@@ -46,8 +44,8 @@
 ---
 ### TAB 2 - 갤러리
 
-![KakaoTalk_20230705_195204592_02](https://github.com/fairykhy/First/assets/138121077/78adb14f-7b65-4926-80ce-10f75e0a50e5)
-![KakaoTalk_20230705_195204592_04](https://github.com/fairykhy/First/assets/138121077/55bf8985-86b1-46a5-a845-0b49a12c82b7)
+<img src="https://github.com/fairykhy/First/assets/138121077/78adb14f-7b65-4926-80ce-10f75e0a50e5" width="250" height="500"/>
+<img src="https://github.com/fairykhy/First/assets/138121077/55bf8985-86b1-46a5-a845-0b49a12c82b7" width="250" height="500"/>
 
 
 #### Major features
@@ -66,8 +64,8 @@
 ---
 ### Tab 3 - 가계부
 
-![KakaoTalk_20230705_195204592](https://github.com/fairykhy/First/assets/138121077/6175d97a-6969-49e5-9762-94e2fdaff573)
-![KakaoTalk_20230705_195204592_03](https://github.com/fairykhy/First/assets/138121077/8d339019-4e39-4076-be01-a9ef88152c03)
+<img src="https://github.com/fairykhy/First/assets/138121077/6175d97a-6969-49e5-9762-94e2fdaff573" width="250" height="500"/>
+<img src="https://github.com/fairykhy/First/assets/138121077/8d339019-4e39-4076-be01-a9ef88152c03" width="250" height="500"/>
 
 #### Major features
 - 한달치 가계부를 위아래로 스크롤하며 확인할 수 있습니다.
@@ -97,7 +95,8 @@
 #### Google OCR api
 https://cloud.google.com/vision/docs/ocr?hl=ko
 
-![OCR](https://github.com/fairykhy/First/assets/138121077/491baceb-3063-4d7e-bbbd-fe48b12e4d73)
+<img src="https://github.com/fairykhy/First/assets/138121077/491baceb-3063-4d7e-bbbd-fe48b12e4d73" width="250" height="500"/>
+
 
 - 광 문자 인식 기술인 OCR 기술을 활영하여 텍스트 인식을 실시하였습니다.
 - 임의의 이미지에서 텍스트를 감지하고 추출해냅니다.
